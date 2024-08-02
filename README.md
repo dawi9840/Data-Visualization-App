@@ -34,5 +34,23 @@ update_flask.py:運行時，可以依造 terminal 上顯示的網址，link 到 
 $: python update_flask.py      
 ```
 ![image](https://github.com/user-attachments/assets/da1ff787-d239-4058-832a-33e35e10ba48) 
-![image](https://github.com/user-attachments/assets/420200c3-5a21-492a-9118-755cec7b9dd4) 
+![image](https://github.com/user-attachments/assets/420200c3-5a21-492a-9118-755cec7b9dd4)  
+
+## Simple Web server:Ngrok  
+Step1. 從[ngrok官網](https://dashboard.ngrok.com/get-started/your-authtoken)下載 ngrok 檔案 (這邊先做好，直接在./web_server folder 解壓縮就好)。
+
+Step2.To get token
+![image](https://github.com/user-attachments/assets/64a74d9a-63e9-4175-b705-491e9eb1b5e2)
+
+Step3.Open terminal to config token setting
+```bash
+# Config token setting
+$: ngrok authtoken <YOUR_AUTH_TOKEN>
+
+# Finally, to start the server
+$: ngrok http 5000    
+```
+![image](https://github.com/user-attachments/assets/683bdf4a-81b0-42c6-ab6a-2d8e7c7da1a1)    
+![image](https://github.com/user-attachments/assets/54a91a43-37fc-42a1-bc1b-1430313ed93d)    
+
 
