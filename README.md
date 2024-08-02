@@ -7,13 +7,10 @@ Flask Application for Data Visualization with Dynamic Plot Updates.
 
 # 前置作業2
 ## Code Env (local端環境) 
-```bash
-$: conda create --name hhtd24 python=3.8 
-$: conda activate hhtd24 
-$: pip install requests matplotlib flask pyOpenSSL flask-cors
 
-
-
+`$: conda create --name hhtd24 python=3.8` 
+`$: conda activate hhtd24` 
+`$: pip install requests matplotlib flask pyOpenSSL flask-cors`  
 ![image](https://github.com/user-attachments/assets/39fe0513-08c2-438d-9b78-f136be4209e7) 
 
 
@@ -23,7 +20,6 @@ $: python client.py
 
 post_2_server.py: 運行可以直接PUT一筆資料。 
 $: pyhton post_2_server.py 
-
 
 update_flask.py:運行可以看依造terminal上顯示的網植連接到browser上看視覺化結果。 
 $: python update_flask.py 
