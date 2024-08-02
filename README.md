@@ -14,7 +14,7 @@ $: go run main.go
 ![image](https://github.com/user-attachments/assets/56aab720-85da-4158-baf0-d1aec7c2828c) 
 
 前置2: Code env setting (local env)   
-![image](https://github.com/user-attachments/assets/26edf9a4-0f42-4fbb-8bef-d6a56a6a4850)   
+![image](https://github.com/user-attachments/assets/26edf9a4-0f42-4fbb-8bef-d6a56a6a4850)
 ```bash   
 $: conda create --name hhtd24 python=3.8      
 $: conda activate hhtd24
