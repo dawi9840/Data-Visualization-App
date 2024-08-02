@@ -13,7 +13,7 @@ $: go run main.go
 ```
 ![image](https://github.com/user-attachments/assets/56aab720-85da-4158-baf0-d1aec7c2828c) 
 
-前置2: Code Env (local端環境)   
+前置2: Code Env setting (local 環境)   
 ```bash   
 $: conda create --name hhtd24 python=3.8      
 $: conda activate hhtd24   
