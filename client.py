@@ -33,16 +33,6 @@ def get_rest_data(url: str) -> List[Dict[str, int]]:
 
 if __name__ == '__main__':
     user_url = "http://20.78.3.60:8080/users"
-    data_url = "http://20.78.3.60:8080/data"
-    speed_url = "http://20.78.3.60:8080/speed"
-    power_url = "http://20.78.3.60:8080/power"
-
     can_status_url = "http://20.78.3.60:8080/version/status?name=can"
-
-    # test_GET_display(data_url, 'data')
     test_GET_display(user_url, 'users')
-    # test_GET_display(speed_url, 'speed')
-    # test_GET_display(power_url, 'power')
     test_GET_display(can_status_url, 'status')
-
-
