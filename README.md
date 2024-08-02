@@ -7,13 +7,14 @@ Flask Application for Data Visualization with Dynamic Plot Updates.
 
 # 前置作業2
 ## Code Env (local端環境)   
-`$: conda create --name hhtd24 python=3.8`   
-`$: conda activate hhtd24`   
-`$: pip install requests matplotlib flask pyOpenSSL flask-cors`   
-![image](https://github.com/user-attachments/assets/39fe0513-08c2-438d-9b78-f136be4209e7)  
+```bash   
+$: conda create --name hhtd24 python=3.8      
+$: conda activate hhtd24   
+$: pip install requests matplotlib flask pyOpenSSL flask-cors    
+```
 
 
-## File File Description 
+## File Description 
 client.py: 測是接收GET資料，可以這樣執行:    
 `$: python client.py`   
 
