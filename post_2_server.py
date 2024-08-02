@@ -9,7 +9,7 @@ def post_data(url: str, data: Dict[str, int]):
     response = requests.post(url, json=data)
     # 檢查請求是否成功
     if response.status_code == 200:
-        print(f"Data posted successfully: {data}")
+        print(f"Data posted successfully:\n {data}")
     else:
         print(f"Failed to post data: {response.status_code}, {response.text}")
 
@@ -46,25 +46,7 @@ def test_dawi_generate_data():
     # print("time:", time, " , len: ", len(time)) 
     print("power:", power, " , len: ", len(power))
 
-# Util
-def generate_num_y(input: int) -> List[int]:
-    result = []
-    for i in range(0, input, 1):
-        result.append(i)
-    return result
-
-def generate_random(length: int, max_value: int) -> List[int]:
-    result = []
-    for _ in range(length):
-        result.append(random.randint(0, max_value))
-    return result
-
-def convert_list_to_str(input_list: List[int]) -> str:
-    return json.dumps(input_list)
-
-
-if __name__ == '__main__':
-
+def post_a_user_data_2_server():
     user_url = 'http://20.78.3.60:8080/user'
 
     time: List[int] = generate_num_y(50)
@@ -83,4 +65,41 @@ if __name__ == '__main__':
     print('power_str:', power_str, '\n')
 
     post_data(user_url, {"speed": speed_str, "power": power_str})
+
+def post_can_status(can_status:int):
+    # GET: "http://20.78.3.60:8080/version/status?name=can"    
+    can_url = "http://20.78.3.60:8080/version/can" # PUT
+
+    can_value = str(can_status)
+    data = {'status': can_value}
+
+    # 發送 POST 請求以發送數據
+    response = requests.post(can_url, json=data)
+
+    # 檢查請求是否成功
+    if response.status_code == 200:
+        print(f"Data posted successfully: {data}")
+    else:
+        print(f"Failed to post data: {response.status_code}, {response.text}")
+
+# Util
+def generate_num_y(input: int) -> List[int]:
+    result = []
+    for i in range(0, input, 1):
+        result.append(i)
+    return result
+
+def generate_random(length: int, max_value: int) -> List[int]:
+    result = []
+    for _ in range(length):
+        result.append(random.randint(0, max_value))
+    return result
+
+def convert_list_to_str(input_list: List[int]) -> str:
+    return json.dumps(input_list)
+
+if __name__ == '__main__':
+
+    post_a_user_data_2_server()
+    # post_can_status(0)
 
