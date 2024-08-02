@@ -10,7 +10,7 @@ Flask Application for Data Visualization with Dynamic Plot Updates.
 ```bash
 $: conda create --name hhtd24 python=3.8 
 $: conda activate hhtd24 
-$: pip install requests matplotlib flask pyOpenSSL flask-cors 
+$: pip install requests matplotlib flask pyOpenSSL flask-cors ``` 
 ![image](https://github.com/user-attachments/assets/39fe0513-08c2-438d-9b78-f136be4209e7) 
 
 ## File File Description 
