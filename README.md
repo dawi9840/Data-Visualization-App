@@ -46,6 +46,10 @@ $: python update_flask.py
 
 ## Simple Web server:Ngrok  
 Step1. 從 [ngrok官網](https://dashboard.ngrok.com/get-started/your-authtoken) 下載壓縮檔案 (這邊直接在./web_server folder 解壓縮就好)。
+```bash 
+$: cd ./web_server
+$: unzip ./ngrok-v3-stable-windows-amd64.zip -d ./   
+```
 
 Step2.To get token
 ![image](https://github.com/user-attachments/assets/64a74d9a-63e9-4175-b705-491e9eb1b5e2)
