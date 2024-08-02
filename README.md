@@ -21,7 +21,7 @@ $: conda activate hhtd24
 ```
 Install relate modules  
 ```bash    
-$: pip install requests matplotlib flask pyOpenSSL flask-cors    
+$: pip install requests matplotlib flask     
 ```
  
 
