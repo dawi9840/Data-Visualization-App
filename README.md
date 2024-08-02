@@ -37,7 +37,7 @@ post_2_server.py: 運行可以直接PUT一筆資料至雲端。
 $: pyhton post_2_server.py          
 ```
 
-update_flask.py:運行時，可以依造 terminal 上顯示的網址，link 到 browser 上看視覺化結果。       
+update_flask.py:運行時，可以依造 terminal 上顯示的網址，link 到 browser 上看 local 端視覺化結果。       
 ```bash           
 $: python update_flask.py      
 ```    
