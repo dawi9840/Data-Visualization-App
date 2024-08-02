@@ -6,7 +6,8 @@ Flask Application for Data Visualization with Dynamic Plot Updates.
 ![image](https://github.com/user-attachments/assets/56aab720-85da-4158-baf0-d1aec7c2828c) 
 
 # 前置作業2
-## Code Env (local端環境)  
+## Code Env (local端環境) 
+```bash
 $: conda create --name hhtd24 python=3.8 
 $: conda activate hhtd24 
 $: pip install requests matplotlib flask pyOpenSSL flask-cors 
