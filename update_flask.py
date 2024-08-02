@@ -49,12 +49,7 @@ def create_plot(speed: List[int], power: List[int], filename: str = None):
         axs[0].spines['bottom'].set_visible(False)
         axs[0].tick_params(axis='both', which='both', length=0, labelcolor='#B1B4B7')
         axs[0].grid(False)
-        # axs[0].xaxis.set_tick_params(pad=2)   # 調整 x 軸刻度標籤位置
-        # axs[0].yaxis.set_tick_params(pad=-10) # 調整 y 軸刻度標籤位置
-        # axs[0].xaxis.set_major_locator(MaxNLocator(integer=True)) # 確保 x 軸刻度是整數
-        # axs[0].xaxis.set_major_locator(plt.MaxNLocator(nbins='auto', integer=True)) # 自動調整刻度數量
         # -----------------------------------------------------------------------------------------------
-        # new version
         axs[0].xaxis.set_tick_params(pad=2)   # 調整 x 軸刻度標籤位置
         axs[0].yaxis.set_tick_params(pad=-10) # 調整 y 軸刻度標籤位置
         axs[0].set_xticks(range(0, 50, 5))
@@ -73,12 +68,7 @@ def create_plot(speed: List[int], power: List[int], filename: str = None):
         axs[1].spines['bottom'].set_visible(False)
         axs[1].tick_params(axis='both', which='both', length=0, labelcolor='#B1B4B7')
         axs[1].grid(False)
-        # axs[1].xaxis.set_tick_params(pad=2)   # 調整 x 軸刻度標籤位置
-        # axs[1].yaxis.set_tick_params(pad=-10) # 調整 y 軸刻度標籤位置
-        # axs[1].xaxis.set_major_locator(MaxNLocator(integer=True)) # 確保 x 軸刻度是整數
-        # axs[1].xaxis.set_major_locator(plt.MaxNLocator(nbins='auto', integer=True)) # 自動調整刻度數量
         # -----------------------------------------------------------------------------------------------
-        # new version
         axs[1].xaxis.set_tick_params(pad=2)   # 調整 x 軸刻度標籤位置
         axs[1].yaxis.set_tick_params(pad=4) # 調整 y 軸刻度標籤位置
         axs[1].set_xticks(range(0, 50, 5))
