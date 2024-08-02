@@ -46,7 +46,10 @@ Step3.Open terminal to config token setting
 ```bash
 # Config token setting
 $: ngrok authtoken <YOUR_AUTH_TOKEN>
+```     
 
+Step4.Start the server to check the result.    
+```bash
 # Finally, to start the server
 $: ngrok http 5000    
 ```
