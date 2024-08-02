@@ -1,12 +1,19 @@
 # Data-Visualization-App 
 Flask Application for Data Visualization with Dynamic Plot Updates.
 
-# 前置作業1
-## 雲端server能連上 
+## 前置   
+前置1: 雲端 server 能連上
+ ```bash
+# Connect to hhtd24 server
+$: ssh ebg@20.78.3.60
+
+# Start the server
+$: cd kuma
+$: go run main.go
+```
 ![image](https://github.com/user-attachments/assets/56aab720-85da-4158-baf0-d1aec7c2828c) 
 
-# 前置作業2
-## Code Env (local端環境)   
+前置2: Code Env (local端環境)   
 ```bash   
 $: conda create --name hhtd24 python=3.8      
 $: conda activate hhtd24   
