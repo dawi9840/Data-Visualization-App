@@ -15,5 +15,5 @@ def put_can_status(can_status: str):
         print(f"Failed to post data: {response.status_code}, {response.text}")
 
 if __name__ == '__main__':
-    # Input string 0 or 1
-    put_can_status('0')
+    
+    put_can_status('0') # Input string 0 or 1
