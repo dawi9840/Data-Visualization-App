@@ -23,16 +23,20 @@ $: pip install requests matplotlib flask pyOpenSSL flask-cors
 
 
 ## File Description  
-```bash   
 client.py: 執行測試接收GET資料。    
+```bash       
 $: python client.py      
+```
 
 post_2_server.py: 運行可以直接PUT一筆資料至雲端。    
-$: pyhton post_2_server.py       
-
-update_flask.py:運行時，可以依造 terminal 上顯示的網址，link 到 browser 上看視覺化結果。      
-$: python update_flask.py      
+```bash       
+$: pyhton post_2_server.py          
 ```
+
+update_flask.py:運行時，可以依造 terminal 上顯示的網址，link 到 browser 上看視覺化結果。       
+```bash           
+$: python update_flask.py      
+```    
 ![image](https://github.com/user-attachments/assets/da1ff787-d239-4058-832a-33e35e10ba48) 
 ![image](https://github.com/user-attachments/assets/420200c3-5a21-492a-9118-755cec7b9dd4)  
 
