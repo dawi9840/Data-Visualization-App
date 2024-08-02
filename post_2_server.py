@@ -66,22 +66,6 @@ def post_a_user_data_2_server():
 
     post_data(user_url, {"speed": speed_str, "power": power_str})
 
-def post_can_status(can_status:int):
-    # GET: "http://20.78.3.60:8080/version/status?name=can"    
-    can_url = "http://20.78.3.60:8080/version/can" # PUT
-
-    can_value = str(can_status)
-    data = {'status': can_value}
-
-    # 發送 POST 請求以發送數據
-    response = requests.post(can_url, json=data)
-
-    # 檢查請求是否成功
-    if response.status_code == 200:
-        print(f"Data posted successfully: {data}")
-    else:
-        print(f"Failed to post data: {response.status_code}, {response.text}")
-
 # Util
 def generate_num_y(input: int) -> List[int]:
     result = []
@@ -101,5 +85,3 @@ def convert_list_to_str(input_list: List[int]) -> str:
 if __name__ == '__main__':
 
     post_a_user_data_2_server()
-    # post_can_status(0)
-
