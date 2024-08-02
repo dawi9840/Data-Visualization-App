@@ -4,7 +4,7 @@ Flask Application for Data Visualization with Dynamic Plot Updates.
 ## 前置   
 前置1: 雲端 server 能連上
  ```bash
-# Connect to hhtd24 server
+# Connect to the hhtd24 server
 $: ssh ebg@20.78.3.60
 
 # Start the server
