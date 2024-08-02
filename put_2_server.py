@@ -1,5 +1,4 @@
 import requests
-import json
 
 def put_can_status(can_status: str):  
     can_url = "http://20.78.3.60:8080/version/can"  # URL for PUT request
