@@ -64,7 +64,7 @@ def post_a_user_data_2_server():
     power_str: List[str] = convert_list_to_str(power_int)
     print('power_str:', power_str, " \nlen(power_str): ", len(power_str), ", len(power_int): ", len(power_int),'\n')
 
-    post_data(user_url, {"speed": speed_str, "power_str": power_str})
+    post_data(user_url, {"speed": speed_str, "power": power_str})
 
 # Util
 def generate_num_y(input: int) -> List[int]:
