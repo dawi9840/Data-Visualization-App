@@ -20,6 +20,9 @@ def extract_speed_and_power(data: Dict[str, str]) -> Tuple[List[int], List[int]]
                                      Returns (None, None) if an error occurs.
     """
     try:
+        if not data['speed'] or not data['power']:
+            raise ValueError("Speed or power data is missing or empty")
+        
         speed = json.loads(data['speed'].replace("'", '"'))
         power = json.loads(data['power'].replace("'", '"'))
         return speed, power
@@ -157,10 +160,14 @@ def plot_data(data: List[int], line_color: str = '#5B8BD3', fill_color: str = '#
 def test_plot_speed_and_power():
     user_url:str = "http://20.78.3.60:8080/users"
     user_data: List[Dict[str, int]] = get_rest_data(user_url)
+    print("user_data: ", user_data, "\n")
+    print("len(user_data): ", len(user_data))
 
-    print("len(user): ", len(user_data))
+    # print("\ndata[0]: ", user_data[0], "\n")
+
     # 提取 'speed' 和 'power' 的值
-    speed, power = extract_speed_and_power(user_data[19])
+    speed, power = extract_speed_and_power(user_data[0]) # index 0~9
+    # print("Speed:", type(user_data[0]['speed']))
     print("Speed:", speed, " len(speed): ", len(speed))
     print("Power:", power, "len(power): ", len(power))
 
