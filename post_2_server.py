@@ -53,18 +53,18 @@ def post_a_user_data_2_server():
     # print('time:', time, '\n')
     
     speed_int: List[int] = generate_random(len(time), 360)
-    # print('speed_int:', speed, '\n')
+    # print('speed_int:', speed_int, " len(speed_int): ", len(speed_int), '\n')
     
     power_int: List[int] = generate_random(len(time), 100)
-    # print('power_int:', power, '\n')
+    # print('power_int:', power_int, " len(power_int): ", len(power_int),  '\n')
 
     speed_str: List[str] = convert_list_to_str(speed_int)
-    print('speed_str:', speed_str, '\n')
+    print('speed_str:', speed_str, " \nlen(speed_str): ", len(speed_str), ", len(speed_int): ", len(speed_int), '\n')
     
     power_str: List[str] = convert_list_to_str(power_int)
-    print('power_str:', power_str, '\n')
+    print('power_str:', power_str, " \nlen(power_str): ", len(power_str), ", len(power_int): ", len(power_int),'\n')
 
-    post_data(user_url, {"speed": speed_str, "power": power_str})
+    post_data(user_url, {"speed": speed_str, "power_str": power_str})
 
 # Util
 def generate_num_y(input: int) -> List[int]:
