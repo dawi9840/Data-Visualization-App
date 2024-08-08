@@ -60,12 +60,7 @@ def plot_speed_and_power(speed: List[int], power: List[int], filename: str = Non
     axs[0].spines['bottom'].set_visible(False)
     axs[0].tick_params(axis='both', which='both', length=0, labelcolor='#B1B4B7')
     axs[0].grid(False)
-    # axs[0].xaxis.set_tick_params(pad=-2)  # 調整 x 軸刻度標籤位置
-    # axs[0].yaxis.set_tick_params(pad=3)  # 調整 y 軸刻度標籤位置
-    # axs[0].xaxis.set_major_locator(MaxNLocator(integer=True)) # 確保 x 軸刻度是整數
-    # axs[0].xaxis.set_major_locator(plt.MaxNLocator(nbins='auto', integer=True)) # 自動調整刻度數量
     # -----------------------------------------------------------------------------------------------
-    # new version
     axs[0].xaxis.set_tick_params(pad=2)   # 調整 x 軸刻度標籤位置
     axs[0].yaxis.set_tick_params(pad=-10) # 調整 y 軸刻度標籤位置
     axs[0].set_xticks(range(0, 50, 5))
@@ -81,12 +76,7 @@ def plot_speed_and_power(speed: List[int], power: List[int], filename: str = Non
     axs[1].spines['bottom'].set_visible(False)
     axs[1].tick_params(axis='both', which='both', length=0, labelcolor='#B1B4B7')
     axs[1].grid(False)
-    # axs[1].xaxis.set_tick_params(pad=2)  # 調整 x 軸刻度標籤位置
-    # axs[1].yaxis.set_tick_params(pad=-10)  # 調整 y 軸刻度標籤位置
-    # axs[1].xaxis.set_major_locator(MaxNLocator(integer=True)) # 確保 x 軸刻度是整數
-    # axs[1].xaxis.set_major_locator(plt.MaxNLocator(nbins='auto', integer=True)) # 自動調整刻度數量
     # -----------------------------------------------------------------------------------------------
-    # new version
     axs[1].xaxis.set_tick_params(pad=2)   # 調整 x 軸刻度標籤位置
     axs[1].yaxis.set_tick_params(pad=-10) # 調整 y 軸刻度標籤位置
     axs[1].set_xticks(range(0, 50, 5))
@@ -157,7 +147,7 @@ def plot_data(data: List[int], line_color: str = '#5B8BD3', fill_color: str = '#
     plt.grid(False)
     plt.show()
 
-def test_plot_speed_and_power():
+def test_plot_speed_and_power(data_index: int):
     user_url:str = "http://20.78.3.60:8080/users"
     user_data: List[Dict[str, int]] = get_rest_data(user_url)
     print("user_data: ", user_data, "\n")
@@ -166,7 +156,7 @@ def test_plot_speed_and_power():
     # print("\ndata[0]: ", user_data[0], "\n")
 
     # 提取 'speed' 和 'power' 的值
-    speed, power = extract_speed_and_power(user_data[0]) # index 0~9
+    speed, power = extract_speed_and_power(user_data[data_index])
     # print("Speed:", type(user_data[0]['speed']))
     print("Speed:", speed, " len(speed): ", len(speed))
     print("Power:", power, "len(power): ", len(power))
@@ -178,4 +168,4 @@ def test_plot_speed_and_power():
 if __name__ == '__main__':
     # save_plot_speed_and_power(1)
     # update_polt(5, 5)
-    test_plot_speed_and_power()
+    test_plot_speed_and_power(0) # input index 0~9
