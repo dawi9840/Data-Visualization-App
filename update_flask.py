@@ -1,25 +1,24 @@
 import os
 from typing import List, Dict
 import matplotlib.pyplot as plt
-from matplotlib.ticker import MaxNLocator, MultipleLocator
-from flask import Flask, render_template, send_file, jsonify, url_for
-from client import get_rest_data
-from data_visualization import extract_speed_and_power
-import time
 from datetime import datetime
+import time
+from flask import Flask, render_template, send_file, jsonify, url_for
+from client import get_rest_data, get_ota_status
+from data_visualization import extract_speed_and_power
+from put_2_server import put_can_status, reset_put_ota_status, put_ota_status
 import matplotlib
 matplotlib.use('Agg')
 
+html_file:str = 'vue_index_v2.html'
+
 app = Flask(__name__)
 
-# 在應用程式啟動時建立目錄
-static_img_dir = os.path.join(app.static_folder, 'imgs')
+static_img_dir = os.path.join(app.static_folder, 'imgs') # 在應用程式啟動時建立目錄
 if not os.path.exists(static_img_dir):
     os.makedirs(static_img_dir)
     print(f"Created directory: {static_img_dir}")
 
-# index_v2.html, vue_index_v2.html
-html_file:str = 'vue_index_v2.html'
 
 def create_plot(speed: List[int], power: List[int], filename: str = None):
     """
@@ -58,7 +57,6 @@ def create_plot(speed: List[int], power: List[int], filename: str = None):
         # 顯示請求時間在子圖左上角 # 0.05, 0.99
         axs[0].text(-0.02, 1.10, f"{request_time}", transform=axs[0].transAxes, fontsize=8, color='black', ha='left', va='top')
 
-
         # Plot power data
         axs[1].plot(power, linestyle='-', color='#9D5ABD')
         axs[1].fill_between(range(len(power)), power, color='#F6E8FE', alpha=0.5)
@@ -70,7 +68,7 @@ def create_plot(speed: List[int], power: List[int], filename: str = None):
         axs[1].grid(False)
         # -----------------------------------------------------------------------------------------------
         axs[1].xaxis.set_tick_params(pad=2)   # 調整 x 軸刻度標籤位置
-        axs[1].yaxis.set_tick_params(pad=4) # 調整 y 軸刻度標籤位置
+        axs[1].yaxis.set_tick_params(pad=4)   # 調整 y 軸刻度標籤位置
         axs[1].set_xticks(range(0, 50, 5))
         axs[1].set_xticklabels(x_tick_labels[:10])
 
@@ -91,11 +89,10 @@ def create_plot(speed: List[int], power: List[int], filename: str = None):
         plt.margins(0, 0) # 移除邊緣空白區域
 
         full_path = os.path.join(app.static_folder, 'imgs', filename) # 確保目錄存在
-        print(f"Saving plot to: {full_path}") # 調試信息
-        # plt.savefig(full_path, format='png') # 保存圖片
-        plt.savefig(full_path, format='png', bbox_inches='tight', pad_inches=0)  # 調整邊界和填充
+        print(f"Saving plot to: {full_path}")
+        plt.savefig(full_path, format='png', bbox_inches='tight', pad_inches=0)  # 保存圖片, and調整邊界和填充
 
-        plt.close(fig)  # 確保關閉圖形以釋放記憶體，關閉當前圖形
+        plt.close(fig)    # 確保關閉圖形以釋放記憶體，關閉當前圖形
         plt.close('all')  # 關閉所有圖形
 
         if os.path.exists(full_path):  # 打印確認信息
@@ -109,28 +106,24 @@ def create_plot(speed: List[int], power: List[int], filename: str = None):
 
 @app.route('/')
 def index():
-    plot() # 調用 plot 函數生成圖片
+    plot()                  # 調用 plot 函數生成圖片
+    receive_ota_status()    # 調用 receive_ota_status 傳送字串給 html_file
     return render_template(html_file)
 
 
 @app.route('/plot')
 def plot():
-    count: int = 3
+    count: int = 3 # 只處理最新的三筆數據
     user_url: str = "http://20.78.3.60:8080/users"
     user_data: List[Dict[str, int]] = get_rest_data(user_url)
-
-    # 調試信息
-    print(f"user_data: {user_data}")
-    print(f"user_data length: {len(user_data) if user_data else 'None'}")
+    # print(f"user_data: {user_data}")
+    # print(f"user_data length: {len(user_data) if user_data else 'None'}")
 
     if user_data is not None and len(user_data) > 0:
-        # 只處理最新的三筆數據;計算倒數 count 張圖片;取倒數3張
         for i in range(count):
-            index = len(user_data) - count + i
-            print(f"Processing index [{index}]")
-            speed, power = extract_speed_and_power(user_data[index])
-            print(f"Speed: {speed}, Power: {power}")
-            create_plot(speed, power, filename=f"plot_{i+1}.png")  # 使用字符串作為文件名
+            speed, power = extract_speed_and_power(user_data[i])               
+            # print(f"Speed: {speed}, Power: {power}")
+            create_plot(speed, power, filename=f"plot_{i+1}.png")    # 使用字符串作為文件名
     else:
         return "Server data not found."
 
@@ -147,11 +140,8 @@ def update_plots():
     user_data = get_rest_data("http://20.78.3.60:8080/users")
 
     try:
-        # 只處理最新的三筆數據
-        for i in range(3):
-            index = len(user_data) - 3 + i
-            speed, power = extract_speed_and_power(user_data[index])
-            # create_plot(speed, power, i + 1)
+        for i in range(3): 
+            speed, power = extract_speed_and_power(user_data[i])   # 只處理最新的三筆數據
             create_plot(speed, power, filename=f"plot_{i+1}.png")  # 使用字符串作為文件名
     finally:
         plt.close('all')  # 確保關閉所有圖形
@@ -165,6 +155,41 @@ def update_plots():
     })
 
 
+@app.route('/receive_ota_status', methods=['GET'])
+def receive_ota_status():
+    ota_status_url = "http://20.78.3.60:8080/version/status?name=hhtd24"
+    ota_status = get_ota_status(ota_status_url)['status']
+    print('Get ota ststus: ', ota_status)
+
+    if(ota_status=='000' or ota_status=='000' or ota_status=='011'):
+        web_status = 'Last update: ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        print("web_status: ", web_status)
+        return jsonify({"webStatusText": web_status})
+
+    if(ota_status=='100' or ota_status=='110' or ota_status=='111'):
+        web_status = "New update is ready"
+        print("web_status: ", web_status)
+        return jsonify({"webStatusText": web_status})
+
+
+@app.route('/update_status', methods=['PUT'])
+def update_status():
+    put_can_status('1')
+    put_ota_status('100')
+
+
+@app.route('/reset_status', methods=['PUT'])
+def reset_status():
+    put_can_status('0')          # To reset the can status
+    reset_put_ota_status('000')  # To reset the ota status
+
+
+@app.route('/data')
+def data():
+    now_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    full_str = "Last update: " + now_time
+    return jsonify({"tittleText": full_str})
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
-
