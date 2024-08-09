@@ -10,7 +10,7 @@ from put_2_server import put_can_status, reset_put_ota_status, put_ota_status
 import matplotlib
 matplotlib.use('Agg')
 
-html_file:str = 'vue_index_v2.html'
+html_file:str = 'vue_index_v3.html'
 
 app = Flask(__name__)
 
@@ -161,15 +161,15 @@ def receive_ota_status():
     ota_status = get_ota_status(ota_status_url)['status']
     print('Get ota ststus: ', ota_status)
 
-    if(ota_status=='000' or ota_status=='000' or ota_status=='011'):
-        web_status = 'Last update: ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        print("web_status: ", web_status)
-        return jsonify({"webStatusText": web_status})
-
-    if(ota_status=='100' or ota_status=='110' or ota_status=='111'):
+    if ota_status in ['000', '001', '011']:
+        web_status = 'Last update: ' + datetime.now().strftime('%Y-%m-%d %H:%M')
+    elif ota_status in ['100', '110', '111']:
         web_status = "New update is ready"
-        print("web_status: ", web_status)
-        return jsonify({"webStatusText": web_status})
+    else:
+        web_status = "Unknown status"
+
+    print("web_status: ", web_status)
+    return web_status  # 直接返回字串
 
 
 @app.route('/update_status', methods=['PUT'])
@@ -182,13 +182,6 @@ def update_status():
 def reset_status():
     put_can_status('0')          # To reset the can status
     reset_put_ota_status('000')  # To reset the ota status
-
-
-@app.route('/data')
-def data():
-    now_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    full_str = "Last update: " + now_time
-    return jsonify({"tittleText": full_str})
 
 
 if __name__ == '__main__':
