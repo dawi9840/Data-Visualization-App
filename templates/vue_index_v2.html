@@ -53,13 +53,9 @@
                             this.plot_1 = data.plot_1;
                         });
                 },
-                updateOTAData() { // For Henry part ~~~~~~~~
-                    
-                }
             },
             created() {
-                // 每10秒更新一次圖片
-                setInterval(this.updatePlots, 10000);
+                setInterval(this.updatePlots, 10000); // 每10秒更新一次圖片
             }
         });
     </script>
