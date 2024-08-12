@@ -58,10 +58,11 @@ body {
 
 .title-button2 {
     position: absolute;           /* 使用絕對定位，將元素相對於最近的已定位父元素進行定位 */
-    top: 400px;                   /* 將按鈕從頂部位置向下 400 像素 */
-    left: 170px;                  /* 將按鈕從左側位置向右 170 像素 */
-    width: 50px;                  /* 設置按鈕的寬度為 50 像素 */
-    height: 120px;                /* 設置按鈕的高度為 120 像素 */
+    position: absolute;           /* 使用絕對定位，將元素相對於最近的已定位父元素進行定位 */
+    top: 390px;                   /* 將按鈕從頂部位置向下 390 像素 */
+    left: 160px;                  /* 將按鈕從左側位置向右 160 像素 */
+    width: 66px;                  /* 設置按鈕的寬度為 66 像素 */
+    height: 146px;                /* 設置按鈕的高度為 146 像素 */
     background: url('imgs/Car.png') no-repeat center center; /* 設置按鈕的背景圖片，並使圖片居中且不重複 */
     background-size: cover;       /* 確保背景圖片完全覆蓋按鈕的尺寸 */
     border: none;                 /* 移除按鈕的邊框 */
