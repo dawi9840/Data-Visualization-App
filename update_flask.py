@@ -3,6 +3,7 @@ from typing import List, Dict
 import matplotlib.pyplot as plt
 from datetime import datetime
 import time
+import pytz
 from flask import Flask, render_template, send_file, jsonify, url_for
 from client import get_rest_data, get_ota_status
 from data_visualization import extract_speed_and_power
@@ -20,6 +21,21 @@ if not os.path.exists(static_img_dir):
     print(f"Created directory: {static_img_dir}")
 
 
+def get_utc_2_taipei_time_zone(time_formate: str) -> str:
+    """
+    Converts the current UTC time to Taipei time zone and formats it.
+
+    Args:
+        time_format (str): A format string for datetime, e.g., '%Y-%m-%d %H:%M' or '%Y-%m-%d %H:%M:%S'.
+
+    Returns:
+        str: The formatted date and time string in Taipei time zone.
+    """
+    utc_time = datetime.now(pytz.utc)                               # 設定 UTC 時區
+    taipei_time = utc_time.astimezone(pytz.timezone('Asia/Taipei')) # 將 UTC 時間轉換為 Asia/Taipei 時區
+    return taipei_time.strftime(time_formate)                       
+
+
 def create_plot(speed: List[int], power: List[int], filename: str = None):
     """
     創建並保存圖片，使用固定的檔案名稱。
@@ -32,7 +48,7 @@ def create_plot(speed: List[int], power: List[int], filename: str = None):
         print(f"Creating plot {filename}...")
 
         fig, axs = plt.subplots(1, 2, figsize=(13.40, 3.0), dpi=100)
-        request_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S') # 記錄並格式化當前的時間 .strftime('%Y-%m-%d %H:%M:%S')
+        request_time = get_utc_2_taipei_time_zone('%Y-%m-%d %H:%M:%S')
 
         # Common x-axis configuration
         x_ticks = [0.5 * i for i in range(11)] 
@@ -162,7 +178,8 @@ def receive_ota_status():
     print('Get ota ststus: ', ota_status)
 
     if ota_status in ['000', '001', '011']:
-        web_status = 'Last update: ' + datetime.now().strftime('%Y-%m-%d %H:%M')
+        formatted_time = get_utc_2_taipei_time_zone('%Y-%m-%d %H:%M')
+        web_status = 'Last update: ' + formatted_time
     elif ota_status in ['100', '110', '111']:
         web_status = "New update is ready"
     else:
@@ -175,7 +192,7 @@ def receive_ota_status():
 @app.route('/update_status', methods=['PUT'])
 def update_status():
     put_can_status('1')
-    put_ota_status('100')
+    # put_ota_status('100')
 
 
 @app.route('/reset_status', methods=['PUT'])
