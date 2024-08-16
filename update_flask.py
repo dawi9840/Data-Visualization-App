@@ -1,42 +1,35 @@
 import os
+import time
+from shutil import move
 from typing import List, Dict
 import matplotlib.pyplot as plt
-from datetime import datetime
-import time
-import pytz
+import matplotlib
 from flask import Flask, render_template, send_file, jsonify, url_for
 from client import get_rest_data, get_ota_status
-from data_visualization import extract_speed_and_power
 from put_2_server import put_can_status, reset_put_ota_status, put_ota_status
-import matplotlib
-matplotlib.use('Agg')
+from data_visual_util import extract_speed_and_power, get_utc_2_taipei_time_zone
 
-html_file:str = 'vue_index_v3.html'
 
 app = Flask(__name__)
 
+html_file:str = 'vue_index_v3.html'
+last_user_data: List[Dict[str, int]] = []                # 全局變量來存儲上一次的數據
+last_request_times: List[str] = []                       # 全局變量來存儲上一次的時間
 static_img_dir = os.path.join(app.static_folder, 'imgs') # 在應用程式啟動時建立目錄
+
+matplotlib.use('Agg') # 將圖表保存為文件（如 PNG、PDF 等），適用於腳本或網頁應用中，不需要在窗口中顯示圖表。
+
+
 if not os.path.exists(static_img_dir):
+    """""
+    檢查一個指定的目錄是否存在，如果不存在，則創建這個目錄，
+    並在控制台上輸出一條訊息，說明已經創建了該目錄。
+    """""
     os.makedirs(static_img_dir)
     print(f"Created directory: {static_img_dir}")
 
 
-def get_utc_2_taipei_time_zone(time_formate: str) -> str:
-    """
-    Converts the current UTC time to Taipei time zone and formats it.
-
-    Args:
-        time_format (str): A format string for datetime, e.g., '%Y-%m-%d %H:%M' or '%Y-%m-%d %H:%M:%S'.
-
-    Returns:
-        str: The formatted date and time string in Taipei time zone.
-    """
-    utc_time = datetime.now(pytz.utc)                               # 設定 UTC 時區
-    taipei_time = utc_time.astimezone(pytz.timezone('Asia/Taipei')) # 將 UTC 時間轉換為 Asia/Taipei 時區
-    return taipei_time.strftime(time_formate)                       
-
-
-def create_plot(speed: List[int], power: List[int], filename: str = None):
+def create_plot(speed: List[int], power: List[int], request_time: str, filename: str = None):
     """
     創建並保存圖片，使用固定的檔案名稱。
     
@@ -48,7 +41,7 @@ def create_plot(speed: List[int], power: List[int], filename: str = None):
         print(f"Creating plot {filename}...")
 
         fig, axs = plt.subplots(1, 2, figsize=(13.40, 3.0), dpi=100)
-        request_time = get_utc_2_taipei_time_zone('%Y-%m-%d %H:%M:%S')
+        # request_time = get_utc_2_taipei_time_zone('%Y-%m-%d %H:%M:%S')
 
         # Common x-axis configuration
         x_ticks = [0.5 * i for i in range(11)] 
@@ -129,21 +122,25 @@ def index():
 
 @app.route('/plot')
 def plot():
-    count: int = 3 # 只處理最新的三筆數據
-    user_url: str = "http://20.78.3.60:8080/users"
-    user_data: List[Dict[str, int]] = get_rest_data(user_url)
-    # print(f"user_data: {user_data}")
-    # print(f"user_data length: {len(user_data) if user_data else 'None'}")
+    global last_user_data, last_request_times
+    user_data: List[Dict[str, int]] = get_rest_data("http://20.78.3.60:8080/users")
+    current_time = get_utc_2_taipei_time_zone('%Y-%m-%d %H:%M:%S')
 
-    if user_data is not None and len(user_data) > 0:
-        for i in range(count):
-            speed, power = extract_speed_and_power(user_data[i])               
-            # print(f"Speed: {speed}, Power: {power}")
-            create_plot(speed, power, filename=f"plot_{i+1}.png")    # 使用字符串作為文件名
-    else:
-        return "Server data not found."
+    try:
+        for i in range(min(3, len(user_data))): # 遍歷 user_data 中最多前三個使用者資料
+            speed, power = extract_speed_and_power(user_data[i])
+            
+            if i >= len(last_request_times): # 如果 last_request_times 的長度小於當前使用者索引，則新增當前時間
+                last_request_times.append(current_time)
+            
+            create_plot(speed, power, last_request_times[i], filename=f"plot_{i+1}.png")
 
-    return render_template(html_file) 
+    finally:
+        plt.close('all')  # 確保關閉所有圖形
+
+    last_user_data = user_data[:3] # 更新全局變量，僅保存前三個使用者的資料
+
+    return render_template(html_file)  # 渲染 HTML 模板並返回
 
 
 @app.route('/image/<filename>')
@@ -153,21 +150,50 @@ def image(filename):
 
 @app.route('/update_plots')
 def update_plots():
-    user_data = get_rest_data("http://20.78.3.60:8080/users")
+    global last_user_data, last_request_times
+    
+    user_data: List[Dict[str, int]] = get_rest_data("http://20.78.3.60:8080/users")
+    current_time = get_utc_2_taipei_time_zone('%Y-%m-%d %H:%M:%S')
 
+    data_changed = False
+    
     try:
-        for i in range(3): 
-            speed, power = extract_speed_and_power(user_data[i])   # 只處理最新的三筆數據
-            create_plot(speed, power, filename=f"plot_{i+1}.png")  # 使用字符串作為文件名
+        # 檢查數據是否有變化
+        if len(user_data) > 0 and (len(last_user_data) == 0 or extract_speed_and_power(user_data[0]) != extract_speed_and_power(last_user_data[0])):
+            data_changed = True
+
+        if data_changed:
+            # 移動現有的圖片
+            for i in range(2, 0, -1):
+                old_file = os.path.join(app.static_folder, 'imgs', f'plot_{i}.png')
+                new_file = os.path.join(app.static_folder, 'imgs', f'plot_{i+1}.png')
+                if os.path.exists(old_file):
+                    move(old_file, new_file)
+
+            # 更新時間列表
+            if len(last_request_times) >= 3:
+                last_request_times = [current_time] + last_request_times[:2]
+            else:
+                last_request_times = [current_time] + last_request_times
+
+            # 創建新的圖片
+            if len(user_data) > 0:
+                speed, power = extract_speed_and_power(user_data[0])
+                create_plot(speed, power, current_time, filename="plot_1.png")
+
+            # 更新 last_user_data
+            last_user_data = user_data[:3]
+        
     finally:
         plt.close('all')  # 確保關閉所有圖形
-
+    
     timestamp = int(time.time())
-
+    
     return jsonify({
         'plot_3': url_for('static', filename='imgs/plot_3.png') + f'?t={timestamp}',
         'plot_2': url_for('static', filename='imgs/plot_2.png') + f'?t={timestamp}',
-        'plot_1': url_for('static', filename='imgs/plot_1.png') + f'?t={timestamp}'
+        'plot_1': url_for('static', filename='imgs/plot_1.png') + f'?t={timestamp}',
+        'data_changed': data_changed
     })
 
 
@@ -175,7 +201,7 @@ def update_plots():
 def receive_ota_status():
     ota_status_url = "http://20.78.3.60:8080/version/status?name=hhtd24"
     ota_status = get_ota_status(ota_status_url)['status']
-    print('Get ota ststus: ', ota_status)
+    # print('Get ota ststus: ', ota_status)
 
     if ota_status in ['000', '001', '011']:
         formatted_time = get_utc_2_taipei_time_zone('%Y-%m-%d %H:%M')
@@ -185,7 +211,7 @@ def receive_ota_status():
     else:
         web_status = "Unknown status"
 
-    print("web_status: ", web_status)
+    # print("web_status: ", web_status)
     return web_status  # 直接返回字串
 
 
