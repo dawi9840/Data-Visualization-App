@@ -58,6 +58,21 @@ body {
 
 .title-button2 {
     position: absolute;           /* 使用絕對定位，將元素相對於最近的已定位父元素進行定位 */
+    top: 0;                   /* 將按鈕從頂部位置向下 390 像素 */
+    left: 0;                  /* 將按鈕從左側位置向右 160 像素 */
+    width: 50px;                  /* 設置按鈕的寬度為 66 像素 */
+    height: 50px;                /* 設置按鈕的高度為 146 像素 */
+    background: url('imgs/test2.png') no-repeat center center; /* 設置按鈕的背景圖片，並使圖片居中且不重複 */
+    background-size: cover;       /* 確保背景圖片完全覆蓋按鈕的尺寸 */
+    border: none;                 /* 移除按鈕的邊框 */
+    cursor: pointer;              /* 當鼠標懸停在按鈕上時顯示手形指針，表明可以點擊 */
+    color: transparent;           /* 隱藏按鈕上的文字顏色，使其不可見 */
+    text-indent: -9999px;         /* 將文字移出視窗外，隱藏文字內容 */
+    border-radius: 5px;           /* 設置按鈕的邊角為圓角，半徑為 5 像素 */
+    padding: 0;                   /* 移除按鈕的內邊距 */
+}
+
+.title-button2-backup {
     position: absolute;           /* 使用絕對定位，將元素相對於最近的已定位父元素進行定位 */
     top: 390px;                   /* 將按鈕從頂部位置向下 390 像素 */
     left: 160px;                  /* 將按鈕從左側位置向右 160 像素 */
