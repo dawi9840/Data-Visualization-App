@@ -1,6 +1,10 @@
 # Data-Visualization-App 
 Flask Application for Data Visualization with Dynamic Plot Updates.
 
+## Overview (orange area part)   
+![web_data_visual_overview_github](https://github.com/user-attachments/assets/11cf50c2-f0fa-40c4-bb02-92205fffe3fb)    
+
+
 ## 前置   
 前置1: 雲端 server 能連上
  ```bash
