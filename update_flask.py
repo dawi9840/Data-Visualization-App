@@ -40,6 +40,12 @@ def create_plot(speed: List[int], power: List[int], request_time: str, filename:
     try:
         print(f"Creating plot {filename}...")
 
+        # 處理 speed 數據，將超過 200 的部分設為 200
+        speed = [min(200, s) for s in speed]
+
+        # 處理 power 數據，將超過 80 的部分設為 80，並且負數設為 0
+        power = [min(80, max(0, p)) for p in power]
+
         fig, axs = plt.subplots(1, 2, figsize=(13.40, 3.0), dpi=100)
         # request_time = get_utc_2_taipei_time_zone('%Y-%m-%d %H:%M:%S')
 
@@ -51,6 +57,7 @@ def create_plot(speed: List[int], power: List[int], request_time: str, filename:
         # Plot speed data
         axs[0].plot(speed, linestyle='-', color='#5C8ACC')
         axs[0].fill_between(range(len(speed)), speed, color='#EAEEFF', alpha=0.5)
+        axs[0].set_ylim(0, 200)  # 固定 y 軸範圍在 0 ~ 200
         axs[0].spines['top'].set_visible(False)
         axs[0].spines['right'].set_visible(False)
         axs[0].spines['left'].set_visible(False)
@@ -66,9 +73,11 @@ def create_plot(speed: List[int], power: List[int], request_time: str, filename:
         # 顯示請求時間在子圖左上角 # 0.05, 0.99
         axs[0].text(-0.02, 1.10, f"{request_time}", transform=axs[0].transAxes, fontsize=8, color='black', ha='left', va='top')
 
-        # Plot power data
+        # Plot power data, replace negative values with 0
+        power = [max(0, p) for p in power]  # 確保負數值顯示為 0
         axs[1].plot(power, linestyle='-', color='#9D5ABD')
         axs[1].fill_between(range(len(power)), power, color='#F6E8FE', alpha=0.5)
+        axs[1].set_ylim(0, 80)  # 固定 y 軸範圍在 0 ~ 80
         axs[1].spines['top'].set_visible(False)
         axs[1].spines['right'].set_visible(False)
         axs[1].spines['left'].set_visible(False)
