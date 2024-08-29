@@ -1,7 +1,7 @@
 
 # How to use the go server?   
 
-### Strrt the go server app in background  
+### Start the go server app in background  
 ```bash        
 $: sudo su  
 $: cd ~/Data-visualization-app/go_server/kuma  
