@@ -1,7 +1,7 @@
 
 # How to use the go server?   
 
-### Start the go server app in background  
+### Start the go server app in background.  
 ```bash        
 $: sudo su  
 $: cd ~/Data-visualization-app/go_server/kuma  
@@ -11,7 +11,7 @@ $: nohup go run main.go &
 ### Kill the Go app's PID with the background server, and restart the app.     
 #### 1.找到進程 ID (PID)  
 ```bash     
-$: ps aux | grep update_flask.py  
+$: ps aux | grep  main.go     
 ```  
 
 ####  2. 終止進程  
