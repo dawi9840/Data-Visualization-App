@@ -1,16 +1,44 @@
 # This is MySQL backup database files.   
 
-## 登錄到 MySQL，系統會提示你輸入 root 用戶的密碼。   
+## 登錄到 MySQL，系統會提示你輸入 root 用戶的密碼。 
+```bash       
 $: sudo mysql -u root -p   
-f********3    
-
-## 查詢用戶，進入 MySQL 命令行後，使用以下 SQL 查詢來列出所有用戶    
-$: SELECT User, Host FROM mysql.user; 
+f********3       
+```
+  
+## 查詢用戶，進入 MySQL 命令行後，使用以下 SQL 查詢來列出所有用戶  
+```bash       
+$: SELECT User, Host FROM mysql.user;
++------------------+-----------+  
+| User             | Host      |  
++------------------+-----------+  
+| debian-sys-maint | localhost |  
+| mysql.infoschema | localhost |  
+| mysql.session    | localhost |  
+| mysql.sys        | localhost |  
+| root             | localhost |  
++------------------+-----------+  
+5 rows in set (0.00 sec)     
+```   
 ![image](https://github.com/user-attachments/assets/6d3fdf9a-db7f-409e-ad9d-aedfe4af627c)      
 5 rows in set (0.00 sec)    
 
 ## 查詢數據庫名稱    
-$: SHOW DATABASES;    
+```bash       
+$: SHOW DATABASES;
++--------------------+  
+| Database           |  
++--------------------+  
+| dawidb             |  
+| information_schema |  
+| mysql              |  
+| performance_schema |  
+| sys                |  
+| userdb             |  
+| versiondb          |  
++--------------------+  
+7 rows in set (0.01 sec)      
+```  
 ![image](https://github.com/user-attachments/assets/9f5d8254-f603-4e4e-a254-5671c4ddcf28)   
 7 rows in set (0.01 sec)  
 
