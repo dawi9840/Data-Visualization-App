@@ -1,4 +1,4 @@
-# This is MySQL backup database files.   
+# This folder contains MySQL backup database files.     
 
 ### 登錄到 MySQL，系統會提示你輸入 root 用戶的密碼。 
 ```bash       
