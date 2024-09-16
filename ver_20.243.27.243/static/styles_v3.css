@@ -7,7 +7,7 @@ body {
     padding: 0;                   /* 移除瀏覽器默認的內邊距 */
     top: 20px;                    /* 設置 body 元素的頂部位置為 20 像素（在這裡通常沒有效果，因為 body 的位置默認為 static） */
     min-height: 100vh;            /* 設置 body 的最小高度為 100% 的視口高度，確保 body 元素至少佔滿整個視口高度 */
-    background: url('imgs/Home.png') no-repeat center center; /* 設置背景圖片，並使圖片在視口中居中且不重複 */
+    background: url('imgs/Home2.png') no-repeat center center; /* 設置背景圖片，並使圖片在視口中居中且不重複 */
     background-size: 100% 105%;   /* 調整背景圖片的大小，使其寬度為 100%，高度為 105% */
     overflow-x: hidden;           /* 防止水平方向的滾動條出現，隱藏水平溢出的內容 */
 }
