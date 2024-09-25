@@ -47,6 +47,31 @@ def extract_speed_and_power(data: Dict[str, str]) -> Tuple[List[int], List[int]]
         return None, None
 
 
+def extract_speed_data(data: Dict[str, str]) -> Tuple[List[int]]:
+    """
+    Extracts the 'speed' values from the given data dictionary.
+
+    Args:
+        data (Dict[str, str]): A dictionary containing at least 'speed' key
+                               with string representations of lists.
+
+    Returns:
+        Tuple[List[int]]: A tuple containing two lists: 'speed'.
+                                     Returns None if an error occurs.
+    """
+    try:
+        if not data['speed']:
+            raise ValueError("Speed data is missing or empty")
+        speed = json.loads(data['speed'].replace("'", '"'))
+        return speed
+    except KeyError as e:
+        print(f"KeyError: {e} not found in the data")
+        return None
+    except json.JSONDecodeError as e:
+        print(f"JSONDecodeError: {e} while parsing the lists")
+        return None
+    
+
 def test_extract_speed_and_power():
     user_url:str = "http://20.243.27.243:8080/users"
     user_data: List[Dict[str, int]] = get_rest_data(user_url)
@@ -66,6 +91,18 @@ def test_get_utc_2_taipei_time_zone():
     print(f'current_time: {current_time}')
 
 
+def test_extract_speed_data():
+    user_url:str = "http://20.243.27.243:8080/users"
+    user_data: List[Dict[str, int]] = get_rest_data(user_url)
+
+    for i in range(0, len(user_data)): 
+        print(f"Index[{i}]:\n{user_data[i]}\n")
+
+        speed = extract_speed_data(user_data[i])
+        print(f"speed[{i}]: {speed}\n")
+       
+
 if __name__ == '__main__':
     test_extract_speed_and_power()
     test_get_utc_2_taipei_time_zone()
+    # test_extract_speed_data()
