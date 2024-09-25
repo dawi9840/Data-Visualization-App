@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Stack</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_v3.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <div class="image-container">
+            <!-- 半透明按鈕 -->
+            <button class="title-button" @click="showPopup = true" v-text="statusText"></button>
+        </div>
+
+        <div class="image-container">
+            <!-- Reset can/ota status 按鈕 -->
+            <button class="title-button2" @click="resetPUT">R</button>
+        </div>
+
+        <!-- 背景遮罩 -->
+        <div class="overlay" :class="{ 'show': showPopup }" @click="showPopup = false"></div>
+
+        <!-- 新視窗 -->
+        <div class="popup-window" :class="{ 'show': showPopup }">
+            <p>Update vehicles with the latest software</p>
+            <div class="new-window-buttons">
+                <button class="close-button" @click="showPopup = false">Close</button>
+                <button class="update-button" @click="{ updateOTAData(), showPopup = false }">Update</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <img :src="plot_1" alt="Plot 1">
+            <img :src="plot_2" alt="Plot 2">
+            <img :src="plot_3" alt="Plot 3">
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                statusText: 'Last update: ',
+                showPopup: false,
+                plot_1: '{{ url_for("static", filename="imgs/plot_1.png") }}?t=' + new Date().getTime(),
+                plot_2: '{{ url_for("static", filename="imgs/plot_2.png") }}?t=' + new Date().getTime(),
+                plot_3: '{{ url_for("static", filename="imgs/plot_3.png") }}?t=' + new Date().getTime(),
+            },
+            methods: {
+                updatePlots() {
+                    fetch('/update_plots')
+                        .then(response => response.json())
+                        .then(data => {
+                            this.plot_1 = data.plot_1;
+                            this.plot_2 = data.plot_2;
+                            this.plot_3 = data.plot_3;
+                        });
+                },
+                updateStatus(){
+                    axios.get('/receive_ota_status')
+                    .then(response => {
+                        this.statusText = response.data;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching status:', error);
+                        this.statusText = 'Error loading status';
+                    });
+                },
+                updateOTAData() { 
+                    fetch('/update_status', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                    })
+                },
+                resetPUT(){
+                    fetch('/reset_status', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                    })
+                },
+            },
+            created() {
+                this.updateStatus();
+                setInterval(this.updateStatus, 5000); // 每 5 秒更新一次狀態
+                setInterval(this.updatePlots, 5000);  // 每 5 秒更新一次圖片
+            }
+        });
+    </script>
+</body>
+</html>
