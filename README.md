@@ -18,7 +18,6 @@ $: go run main.go
 ![image](https://github.com/user-attachments/assets/56aab720-85da-4158-baf0-d1aec7c2828c) 
 
 前置2: Code env setting (local env)   
-![image](https://github.com/user-attachments/assets/26edf9a4-0f42-4fbb-8bef-d6a56a6a4850)
 ```bash   
 $: conda create --name hhtd24 python=3.8      
 $: conda activate hhtd24
@@ -30,23 +29,16 @@ $: pip install requests matplotlib flask pytz
  
 
 
-## File Description  
-client.py: 執行測試接收GET資料。    
+## Folder Description  
+ver_20.243.27.243: New version code.  
 ```bash       
-$: python client.py      
+$: cd ver_20.243.27.243      
 ```
 
-post_2_server.py: 運行可以直接PUT一筆資料至雲端。    
+ver_20.78.3.60: Old version code.     
 ```bash       
-$: pyhton post_2_server.py          
+$: cd ver_20.78.3.60          
 ```
-
-update_flask.py:運行時，可以依造 terminal 上顯示的網址，link 到 browser 上看 local 端視覺化結果。       
-```bash           
-$: python update_flask.py      
-```    
-![image](https://github.com/user-attachments/assets/da1ff787-d239-4058-832a-33e35e10ba48) 
-![image](https://github.com/user-attachments/assets/420200c3-5a21-492a-9118-755cec7b9dd4)  
 
 ## Simple Web server:Ngrok  
 Step1. 從 [ngrok官網](https://dashboard.ngrok.com/get-started/your-authtoken) 下載壓縮檔案 (這邊直接在./web_server folder 解壓縮就好)。
