@@ -1,4 +1,4 @@
-# Data-Visualization-App (old version: 20.243.27.243) 
+# Data-Visualization-App (New version: 20.243.27.243) 
 Flask Application for Data Visualization with Dynamic Plot Updates.
 
 ## Overview (orange area part)   
