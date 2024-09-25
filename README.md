@@ -24,7 +24,7 @@ $: conda activate hhtd24
 ```
 Install relate modules  
 ```bash    
-$: pip install requests matplotlib flask pytz     
+$: pip install requests matplotlib flask pytz flask-socketio     
 ```
  
 
